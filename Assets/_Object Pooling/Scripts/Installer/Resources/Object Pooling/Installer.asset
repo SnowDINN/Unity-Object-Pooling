@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ef36eefef045004487cc9d9acda7e37, type: 3}
+  m_Name: Installer
+  m_EditorClassIdentifier: 
+  PoolList:
+  - Pool: {fileID: 154043072436043694, guid: e1a0ae8613ea479428f9fd3bd16c00f6, type: 3}
+    StartSpawnCount: 1
+    RemoveWaitTime: 10
