@@ -1,37 +1,44 @@
+using System;
 using UnityEngine;
 
 namespace Anonymous.Pooling
 {
-    public class ObjectPoolingTemporary : MonoBehaviour
-    {
-        [SerializeField] [NotEditableField] private float time;
-        private float removeWaitTime;
+	public class ObjectPoolingTemporary : MonoBehaviour
+	{
+		private const float rate = 0.1f;
 
-        public void Enable(float removeWaitTime)
-        {
-            this.removeWaitTime = removeWaitTime;
-        }
+		[SerializeField] [NotEditableField] private float time;
+		private Action onDestory;
+		private float removeWaitTime;
 
-        public void Disable()
-        {
-            InvokeRepeating(nameof(invokeAsync), 0.0f, 0.1f);
-        }
+		public void Enable(float removeWaitTime)
+		{
+			this.removeWaitTime = removeWaitTime;
+		}
 
-        private void invokeAsync()
-        {
-            if (gameObject.activeSelf)
-            {
-                CancelInvoke(nameof(invokeAsync));
-                time = 0;
-            }
+		public void Disable(Action onDestory)
+		{
+			this.onDestory = onDestory;
+			InvokeRepeating(nameof(invokeAsync), 0.0f, rate);
+		}
 
-            if (removeWaitTime < time)
-            {
-                CancelInvoke(nameof(invokeAsync));
-                Destroy(gameObject);
-            }
+		private void invokeAsync()
+		{
+			time += rate;
 
-            time += 0.1f;
-        }
-    }
+			if (gameObject.activeSelf)
+			{
+				CancelInvoke(nameof(invokeAsync));
+				time = 0;
+			}
+
+			if (removeWaitTime < time)
+			{
+				onDestory.Invoke();
+
+				CancelInvoke(nameof(invokeAsync));
+				Destroy(gameObject);
+			}
+		}
+	}
 }
