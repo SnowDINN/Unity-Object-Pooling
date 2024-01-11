@@ -5,24 +5,24 @@ using UnityEngine;
 namespace Anonymous.Pooling
 {
 	[Serializable]
-	public class ObjectPool
+	public class Pool
 	{
-		public GameObject Pool;
-		public int StartSpawnCount;
-		public float RemoveWaitTime;
+		public GameObject Prefab;
+		public int MaintainCount;
+		public float RemoveDelayTime;
 	}
 
 	[CreateAssetMenu(fileName = "Installer", menuName = "Pooling/Installer")]
 	public class Installer : ScriptableObject
 	{
-		[SerializeField] private List<ObjectPool> PoolList;
+		[SerializeField] private List<Pool> PoolList;
 
-		private readonly Dictionary<string, ObjectPool> field = new();
+		private readonly Dictionary<string, Pool> field = new();
 
 		/// <summary>
 		/// Key is the name of the object.
 		/// </summary>
-		public Dictionary<string, ObjectPool> Pools
+		public Dictionary<string, Pool> Pools
 		{
 			get
 			{
@@ -30,7 +30,7 @@ namespace Anonymous.Pooling
 					return field;
 
 				foreach (var pool in PoolList)
-					field.Add(pool.Pool.name, pool);
+					field.Add(pool.Prefab.name, pool);
 				return field;
 			}
 		}

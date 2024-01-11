@@ -5,17 +5,12 @@ using UnityEngine;
 public class SampleCode : MonoBehaviour
 {
 	private GameObject one, two;
-
-	private void Awake()
-	{
-		ObjectPooling.Initialize();
-	}
-
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			var go = ObjectPooling.Rent("Cube");
+			var go = ObjectPool.Rent("Cube");
+			
 			StartCoroutine(Return(go));
 		}
 	}
@@ -24,6 +19,6 @@ public class SampleCode : MonoBehaviour
 	{
 		yield return new WaitForSeconds(3.0f);
 
-		ObjectPooling.Return(go);
+		ObjectPool.Return(go);
 	}
 }

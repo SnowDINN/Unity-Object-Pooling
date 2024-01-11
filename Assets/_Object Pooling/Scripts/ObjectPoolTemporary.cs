@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Anonymous.Pooling
 {
-	public class ObjectPoolingTemporary : MonoBehaviour
+	public class ObjectPoolTemporary : MonoBehaviour
 	{
 		private const float rate = 0.1f;
 
