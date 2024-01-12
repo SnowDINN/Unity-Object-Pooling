@@ -9,7 +9,7 @@ namespace Anonymous.Pooling
 		private static readonly Dictionary<string, Dictionary<int, GameObject>> spawns = new();
 		private static Dictionary<string, Pool> pools;
 
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
 		public static void Initialize()
 		{
 			var installer = Resources.Load("Object Pooling/Installer") as Installer;
@@ -41,7 +41,7 @@ namespace Anonymous.Pooling
 				Debug.LogError("The pool already exists in the list.");
 		}
 
-		public static GameObject Rent(string key)
+		public static GameObject Rent(string key, Transform parent = null)
 		{
 			if (isNotBound(key))
 				Debug.Log($"<color=green>Create new pool group : </color><color=yellow>{key}</color>");
@@ -49,7 +49,9 @@ namespace Anonymous.Pooling
 			var rent = spawns[key].FirstOrDefault(spawn => !spawn.Value.activeSelf).Value;
 			if (rent == null)
 			{
-				rent = Object.Instantiate(pools[key].Prefab);
+				rent = parent == null
+					? GameObject.Instantiate(pools[key].Prefab)
+					: GameObject.Instantiate(pools[key].Prefab, parent);
 				rent.name = $"{key} - {rent.GetInstanceID()}";
 
 				spawns[key].Add(rent.GetInstanceID(), rent);
@@ -64,8 +66,10 @@ namespace Anonymous.Pooling
 				var temporary = rent.GetComponent<ObjectPoolTemporary>();
 				if (temporary != null)
 					temporary.Enable(pools[key].RemoveDelayTime);
+
+				rent.transform.SetParent(parent == null ? rent.transform.root : parent);
 			}
-			
+
 			rent.transform.position = pools[key].Prefab.transform.position;
 			rent.transform.rotation = pools[key].Prefab.transform.rotation;
 			rent.transform.localScale = pools[key].Prefab.transform.localScale;
