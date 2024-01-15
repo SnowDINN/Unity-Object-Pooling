@@ -7,7 +7,7 @@ namespace Anonymous.Pooling
 	{
 		private const float rate = 0.1f;
 
-		[SerializeField] [NotEditableField] private float time;
+		[SerializeField] [NotEditable] private float time;
 		private Action onDestory;
 		private float removeWaitTime;
 
