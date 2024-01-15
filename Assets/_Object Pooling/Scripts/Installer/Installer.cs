@@ -15,7 +15,8 @@ namespace Anonymous.Pooling
 	[CreateAssetMenu(fileName = "Installer", menuName = "Pooling/Installer")]
 	public class Installer : ScriptableObject
 	{
-		[SerializeField] private List<Pool> PoolList;
+		[ElementKey(nameof(Pool.Prefab))] [SerializeField]
+		private List<Pool> PoolList;
 
 		private readonly Dictionary<string, Pool> field = new();
 
